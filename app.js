@@ -1,19 +1,44 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
-const inquirer = require("inquirer");
-const path = require("path");
-const fs = require("fs");
-​
-const OUTPUT_DIR = path.resolve(__dirname, "output")
-const outputPath = path.join(OUTPUT_DIR, "team.html");
-​
-const render = require("./lib/htmlRenderer");
-​
-​
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-​
+// const Manager = require("./lib/Manager");
+// const Engineer = require("./lib/Engineer");
+// const Intern = require("./lib/Intern");
+// const inquirer = require("inquirer");
+// const path = require("path");
+// const fs = require("fs");
+
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
+// ​
+// const render = require("./lib/htmlRenderer");
+​​
+// inquirer.prompt([
+//         {
+//             type: `input`,
+//             name: `Nname`,
+//             message: `Please enter your name`
+//         },
+//         {
+//             type: `input`,
+//             name: `ID`,
+//             message: `Please enter your ID`
+//         },
+//         {
+//             type: `input`,
+//             name: `email`,
+//             message: `Please enter your email`
+//         },
+//     ])
+//     .then(data => {
+//        let inquirerData = data;
+//        console.log(inquirerData + " inside .then")
+//     //    return inquirerData;
+//     })
+//     .catch(error => {
+//         console.log(error)
+//     })
+
+
+// console.log(inquirerData + " outside .then")
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
@@ -33,3 +58,6 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an 
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work!```
+
+
+console.log("hello!")
