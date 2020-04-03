@@ -33,9 +33,9 @@ const questions = [
         name: `role`,
         message: `Please enter your role`,
         choices: [
-            "Manager",
-            "Engineer",
-            "Intern"
+            `Manager`,
+            `Engineer`,
+            `Intern`
         ]
     },
     {
@@ -71,9 +71,10 @@ const questions = [
 
 function ask() { 
 
-    let output = [];
-    
+
+
     return inquirer.prompt(questions).then(answers => {
+        let output = [];
         output.push(answers);
 
         // consider pushing to the async function
@@ -96,16 +97,44 @@ async function init(){
 
         // async function to get data
         
-
         // ask is not looping! 
         let askAnswer = await ask();
         
         //async function to render html
 
-        // this is where the other error is - employee.getRole is not a function
-        let generatedHTML = await render(askAnswer);
+        // let employees = 
+        //   [ {
+        //       name: 'Test',
+        //       ID: 'Test',
+        //       email: 'Test',
+        //       role: "Manager",
+        //       officeNumber: 'Test',
+        //       addMore: false
+        //     },
+        //     {
+        //         name: 'Test',
+        //         ID: 'Test',
+        //         email: 'Test',
+        //         role: "Engineer",
+        //         github: 'Test',
+        //         addMore: false
+        //       },
+        //       ,
+        //     {
+        //         name: 'Test',
+        //         ID: 'Test',
+        //         email: 'Test',
+        //         role: "Intern",
+        //         school: 'Test',
+        //         addMore: false
+        //       }
+        //     ]
+          
 
-        // write file
+        // this is where the other error is - employee.getRole is not a function OR employees.filter is not a function
+        let generatedHTML = render(askAnswer);
+
+        // // write file
         // fs.writeFile(outputPath, generatedHTML, function(err) {
 
         //     if (err) {
