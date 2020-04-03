@@ -10,7 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-let output = []
+
 
 const questions = [
     {
@@ -69,8 +69,10 @@ const questions = [
     },
 ]
 
-function ask() {
-    inquirer.prompt(questions).then(answers => {
+function ask() { //consider turning this into an async function
+    let output = [];
+    
+    return inquirer.prompt(questions).then(answers => {
         output.push(answers);
         if (answers.addMore) {
             ask();
@@ -92,13 +94,13 @@ async function init(){
         // async function to get data
         // issue might be around here
         
-        // let answers = await ask();
+        let answers = await ask();
         
         // why is answers showing up as undefined initially?
 
         //async function to render html
  
-        // let generatedHTML = await render(answers);
+        let generatedHTML = await render(answers);
 
         // write file
         fs.writeFile(outputPath, answers, function(err) {
