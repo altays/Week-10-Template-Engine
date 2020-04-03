@@ -67,7 +67,6 @@ const questions = [
         name: `addMore`,
         message: `Do you want to add more employees?`
     },
-    // logic to restart questions
 ]
 
 function ask() {
@@ -86,7 +85,49 @@ function ask() {
     })
 }
 
-ask();
+async function init(){
+    try {
+        console.log("start of try")
+
+        // async function to get data
+        // issue might be around here
+        
+        // let answers = await ask();
+        
+        // why is answers showing up as undefined initially?
+
+        //async function to render html
+ 
+        // let generatedHTML = await render(answers);
+
+        // write file
+        fs.writeFile(outputPath, answers, function(err) {
+
+            if (err) {
+            return console.log(err);
+            }
+        
+            // log this to a log file
+            console.log("Success!");
+        
+        });
+
+        // console.log("end of try")
+
+    } catch (error) {
+        // console.log("start of error")
+        console.log(error)
+        // console.log("end of error")
+    } finally {
+        // console.log(newHTML)
+        // console.log("start of finally")
+        // console.log(answers)
+        // console.log("end of finally")
+    }
+}
+
+init();
 
 
-
+// create HTML -> call render function, pass in array containing all employee objects
+// create html file named team.html in /output -> create
