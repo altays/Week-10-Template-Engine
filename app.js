@@ -69,16 +69,19 @@ const questions = [
     },
 ]
 
-function ask() { //consider turning this into an async function
+function ask() { 
+
     let output = [];
     
     return inquirer.prompt(questions).then(answers => {
         output.push(answers);
+
+        // consider pushing to the async function
         if (answers.addMore) {
             ask();
         }  else {
             console.log(`You have entered ${output.length} employees.`)
-            // console.log(JSON.stringify(output));
+            console.log(output)
             return output
         }
     })
@@ -92,27 +95,27 @@ async function init(){
         console.log("start of try")
 
         // async function to get data
-        // issue might be around here
         
-        let answers = await ask();
-        
-        // why is answers showing up as undefined initially?
 
+        // ask is not looping! 
+        let askAnswer = await ask();
+        
         //async function to render html
- 
-        let generatedHTML = await render(answers);
+
+        // this is where the other error is - employee.getRole is not a function
+        let generatedHTML = await render(askAnswer);
 
         // write file
-        fs.writeFile(outputPath, answers, function(err) {
+        // fs.writeFile(outputPath, generatedHTML, function(err) {
 
-            if (err) {
-            return console.log(err);
-            }
+        //     if (err) {
+        //     return console.log(err);
+        //     }
         
-            // log this to a log file
-            console.log("Success!");
+        //     // log this to a log file
+        //     console.log("Success!");
         
-        });
+        // });
 
         // console.log("end of try")
 
