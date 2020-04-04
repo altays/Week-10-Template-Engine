@@ -10,9 +10,12 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// restructure based on Kenneth's suggestions - 
+// default questions route
+// question routes for manager, engineer, and intern
 
-
-const questions = [
+// default route
+const mainQuestions = [
     {
         type: `input`,
         name: `name`,
@@ -28,6 +31,7 @@ const questions = [
         name: `email`,
         message: `Please enter your email`
     },
+
     {
         type: `list`,
         name: `role`,
@@ -38,6 +42,11 @@ const questions = [
             `Intern`
         ]
     },
+]
+
+
+// refactor from here down - branch 1
+const managerQuestion =  [
     {
         type: 'input',
         name: 'officeNumber',
@@ -45,7 +54,11 @@ const questions = [
         when: function(answers) {
           return answers.role === "Manager";
         }
-    },
+    }]
+
+    // branch 2
+
+const engineerQuestion = [
     {
         type: 'input',
         name: 'github',
@@ -53,7 +66,11 @@ const questions = [
         when: function(answers) {
           return answers.role === "Engineer";
         }
-    },
+    }]
+
+    // branch 3
+
+const internQuestion = [
     {
         type: 'input',
         name: 'school',
@@ -61,27 +78,32 @@ const questions = [
         when: function(answers) {
           return answers.role === "Intern";
         }
-    },
+    }
+]
+
+    // final question - use for looping
+const loopQuestion = [
     {
         type: `confirm`,
         name: `addMore`,
         message: `Do you want to add more employees?`
-    },
+    }
 ]
 
+// restructure based on Kenneth's suggestions
+// start with default path of questions
+// depending on the role selected, choose a specific question route and create a class using the information gathered
+// push that object into the array 
 function ask() { 
-
-
 
     return inquirer.prompt(questions).then(answers => {
         let output = [];
         output.push(answers);
 
-        // consider pushing to the async function
         if (answers.addMore) {
             ask();
         }  else {
-            console.log(`You have entered ${output.length} employees.`)
+            
             console.log(output)
             return output
         }
@@ -93,70 +115,22 @@ function ask() {
 
 async function init(){
     try {
-        console.log("start of try")
-
-        // async function to get data
-        
-        // ask is not looping! 
         let askAnswer = await ask();
         
-        //async function to render html
+        let generatedHTML = await render(askAnswer);
 
-        // let employees = 
-        //   [ {
-        //       name: 'Test',
-        //       ID: 'Test',
-        //       email: 'Test',
-        //       role: "Manager",
-        //       officeNumber: 'Test',
-        //       addMore: false
-        //     },
-        //     {
-        //         name: 'Test',
-        //         ID: 'Test',
-        //         email: 'Test',
-        //         role: "Engineer",
-        //         github: 'Test',
-        //         addMore: false
-        //       },
-        //       ,
-        //     {
-        //         name: 'Test',
-        //         ID: 'Test',
-        //         email: 'Test',
-        //         role: "Intern",
-        //         school: 'Test',
-        //         addMore: false
-        //       }
-        //     ]
-          
-
-        // this is where the other error is - employee.getRole is not a function OR employees.filter is not a function
-        let generatedHTML = render(askAnswer);
-
-        // // write file
-        // fs.writeFile(outputPath, generatedHTML, function(err) {
-
-        //     if (err) {
-        //     return console.log(err);
-        //     }
-        
-        //     // log this to a log file
-        //     console.log("Success!");
-        
-        // });
-
-        // console.log("end of try")
+        fs.writeFile(outputPath, generatedHTML, function(err) {
+            if (err) {
+                return console.log(err);
+            } else {
+                console.log(`Successfully written to ${outputPath}`);
+            }
+        });
 
     } catch (error) {
-        // console.log("start of error")
         console.log(error)
-        // console.log("end of error")
     } finally {
-        // console.log(newHTML)
-        // console.log("start of finally")
-        // console.log(answers)
-        // console.log("end of finally")
+        console.log(`Finally written to ${outputPath}!`);
     }
 }
 
