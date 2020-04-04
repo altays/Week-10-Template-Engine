@@ -85,12 +85,7 @@ function addEmployee() {
                 employees.push(new Manager(name, id, email, officeNum));
                 inquirer.prompt(loopQuestion).then(loopAnswer => {
                     addMore = loopAnswer.addMore;
-                    if (addMore === true) {
-                        addEmployee();
-                    }
-                    else {
-                        render(employees);
-                    }
+                    addMoreEmployees(addMore);
                 })
             }
         )}
@@ -103,12 +98,7 @@ function addEmployee() {
 
                 inquirer.prompt(loopQuestion).then(loopAnswer => {
                     addMore = loopAnswer.addMore;
-                    if (addMore === true) {
-                        addEmployee();
-                    }
-                    else {
-                        render(employees);
-                    }
+                    addMoreEmployees(addMore);
                 })
             }
         )}
@@ -121,22 +111,30 @@ function addEmployee() {
 
                 inquirer.prompt(loopQuestion).then(loopAnswer => {
                     addMore = loopAnswer.addMore;
-                    if (addMore === true) {
-                        addEmployee();
-                    }
-                    else {
-                        render(employees);
-                    }
+                    addMoreEmployees(addMore);
                 })
             }
         )}
-
-
     })
     .catch(error => {
         console.log(error)
     })
 }
 
-// create HTML -> call render function, pass in array containing all employee objects
-// create html file named team.html in /output -> create
+function addMoreEmployees(boolean) {
+    if (boolean === true) {
+        addEmployee();
+    }
+    else {
+        let newHTML = render(employees);
+        fs.writeFile(outputPath,newHTML, error => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(`File was successfully written at ${outputPath}`);
+            }
+        })
+    }
+}
+
+addEmployee();
