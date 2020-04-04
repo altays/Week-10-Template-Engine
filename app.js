@@ -10,6 +10,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+let employees = [];
+
 // restructure based on Kenneth's suggestions - 
 // default questions route
 // question routes for manager, engineer, and intern
@@ -51,9 +53,6 @@ const managerQuestion =  [
         type: 'input',
         name: 'officeNumber',
         message: 'What is your office number?',
-        when: function(answers) {
-          return answers.role === "Manager";
-        }
     }]
 
     // branch 2
@@ -63,9 +62,6 @@ const engineerQuestion = [
         type: 'input',
         name: 'github',
         message: 'What is your github?',
-        when: function(answers) {
-          return answers.role === "Engineer";
-        }
     }]
 
     // branch 3
@@ -75,9 +71,6 @@ const internQuestion = [
         type: 'input',
         name: 'school',
         message: 'What is your school?',
-        when: function(answers) {
-          return answers.role === "Intern";
-        }
     }
 ]
 
@@ -95,46 +88,74 @@ const loopQuestion = [
 // depending on the role selected, choose a specific question route and create a class using the information gathered
 // push that object into the array 
 function ask() { 
+    return inquirer.prompt(mainQuestions).then(answers => {
+        // asking main questions to get role
+        // if role is manager, ask manager question and pull info from it
+        let role = answers.role;
+        let id = answers.ID;
+        let email = answers.email;
+        let name = answers.name
 
-    return inquirer.prompt(questions).then(answers => {
-        let output = [];
-        output.push(answers);
+        if (role == `Manager`) {
+            inquirer.prompt(managerQuestion).then(managerAnswer => {
+                let officeNum = managerAnswer.officeNumber;
+                employees.push(new Manager(name, id, email, officeNum));
+                // console.log(`${role} and ${id} and ${email} and ${name}`)
+                // console.log(employees);
+            }
+        )}
 
-        if (answers.addMore) {
-            ask();
-        }  else {
-            
-            console.log(output)
-            return output
-        }
+        else if (role == `Engineer`) {
+            inquirer.prompt(engineerQuestion).then(engineerAnswer => {
+                let github = engineerAnswer.github;
+                employees.push(new Engineer(name, id, email, github));
+                // console.log(`${role} and ${id} and ${email} and ${name}`);
+                // console.log(employees);
+            }
+        )}
+
+        else if (role == `Intern`) {
+            inquirer.prompt(internQuestion).then(internAnswer => {
+                let school = internAnswer.school;
+                employees.push(new Intern(name, id, email, school));
+                // console.log(`${role} and ${id} and ${email} and ${name}`);
+                // console.log(employees);
+            }
+        )}
+
+
     })
     .catch(error => {
         console.log(error)
     })
 }
 
-async function init(){
-    try {
-        let askAnswer = await ask();
+// function to keep the loop going
+
+ask()
+
+// async function init(){
+//     try {
+//         let askAnswer = await ask();
         
-        let generatedHTML = await render(askAnswer);
+//         let generatedHTML = await render(askAnswer);
 
-        fs.writeFile(outputPath, generatedHTML, function(err) {
-            if (err) {
-                return console.log(err);
-            } else {
-                console.log(`Successfully written to ${outputPath}`);
-            }
-        });
+//         fs.writeFile(outputPath, generatedHTML, function(err) {
+//             if (err) {
+//                 return console.log(err);
+//             } else {
+//                 console.log(`Successfully written to ${outputPath}`);
+//             }
+//         });
 
-    } catch (error) {
-        console.log(error)
-    } finally {
-        console.log(`Finally written to ${outputPath}!`);
-    }
-}
+//     } catch (error) {
+//         console.log(error)
+//     } finally {
+//         console.log(`Finally written to ${outputPath}!`);
+//     }
+// }
 
-init();
+// init();
 
 
 // create HTML -> call render function, pass in array containing all employee objects
